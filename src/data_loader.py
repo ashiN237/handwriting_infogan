@@ -9,7 +9,7 @@ import torchvision.transforms as transforms
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 
-from src.jp_char_list import CHAR_LIST_FOR_SYUKU
+from jp_char_list import CHAR_LIST_FOR_SYUKU
 
 class EtlCdbDataLoader(Dataset):
     IMG_EXTENSIONS = [".png"]
