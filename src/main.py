@@ -24,16 +24,9 @@ from args import parse_args
 
 torch.set_default_dtype(torch.float32)
 
-# Set logger
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-rh = logging.handlers.RotatingFileHandler('./etlcdb_infogan.log', encoding='utf-8')
-rh.setFormatter(logging.Formatter("%(asctime)s %(name)s:%(lineno)s %(funcName)s [%(levelname)s]: %(message)s"))
-logger.addHandler(rh)
 
 if __name__ == "__main__":
     opt = parse_args()
-    logger.debug(opt)
 
     cuda = True if torch.cuda.is_available() else False
 
@@ -45,8 +38,8 @@ if __name__ == "__main__":
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
 
-    opt.MODEL_DIR = 'jp_ckpt/'
-    opt.OUT_DIR = 'jp_images/'
+    opt.MODEL_DIR = '../result/jp_ckpt/'
+    opt.OUT_DIR = '../result/jp_images/'
     os.makedirs(opt.OUT_DIR + "static/", exist_ok=True)
     os.makedirs(opt.OUT_DIR + "varying_c1/", exist_ok=True)
     os.makedirs(opt.OUT_DIR + "varying_c2/", exist_ok=True)
@@ -97,7 +90,7 @@ if __name__ == "__main__":
         plt.plot(range(0, opt.n_epochs), history['info_loss'], label='info loss')
         plt.xlabel('epoch')
         plt.legend()
-        plt.savefig('jp_images/loss.png')
+        plt.savefig('../result/jp_images/loss.png')
 
     # Configure data loader
     dataloader = torch.utils.data.DataLoader(
@@ -116,9 +109,7 @@ if __name__ == "__main__":
         drop_last=True,
     )
 
-    # ----------
     #  Training
-    # ----------
     history = train(
         generator=generator,
         discriminator=discriminator,
@@ -137,7 +128,5 @@ if __name__ == "__main__":
         static_code=static_code
     )
 
-    # --------------
     # Save Graph
-    # --------------
     save_graph(history)
