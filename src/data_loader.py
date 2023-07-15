@@ -9,10 +9,10 @@ import torchvision.transforms as transforms
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 
-from infogan.src.jp_char_list import CHAR_LIST_FOR_SYUKU
+from src.jp_char_list import CHAR_LIST_FOR_SYUKU
 
 class EtlCdbDataLoader(Dataset):
-    IMG_EXTENSIONS = [".jpg", ".jpeg", ".png", ".bmp"]
+    IMG_EXTENSIONS = [".png"]
 
     def __init__(self, img_dir, transform=None):
         self.etl_paths, self.np_labels = self._get_etl_paths(img_dir)
@@ -57,21 +57,31 @@ class EtlCdbDataLoader(Dataset):
     def __len__(self):
         return len(self.etl_paths)
 
-def get_dataloader(opt):
-    transform = transforms.Compose([
-        transforms.Resize(opt.img_size),
-        transforms.ToTensor(),
-        transforms.Normalize([0.5], [0.5])
-    ])
 
-    dataloader = DataLoader(
-        EtlCdbDataLoader(
-            "ocr_dataset_create_jp/output",
-            transform=transform
-        ),
-        batch_size=opt.batch_size,
-        shuffle=True,
-        num_workers=opt.n_cpu
-    )
+class FineTuneDataset(Dataset):
+    def __init__(self, data_dir, transform=None):
+        self.data_dir = data_dir
+        self.transform = transform
+        self.image_paths = self._get_image_paths()
 
-    return dataloader
+    def __getitem__(self, index):
+        image_path = self.image_paths[index]
+        image = Image.open(image_path).convert("RGB")
+
+        if self.transform:
+            image = self.transform(image)
+
+        label = int(os.path.basename(image_path).split(".")[0])
+
+        return image, label
+
+    def __len__(self):
+        return len(self.image_paths)
+
+    def _get_image_paths(self):
+        image_paths = []
+        for root, _, files in os.walk(self.data_dir):
+            for file in files:
+                if file.lower().endswith(".png"):
+                    image_paths.append(os.path.join(root, file))
+        return image_paths
