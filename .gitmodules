@@ -1,0 +1,3 @@
+[submodule "ocr_dataset_create_jp"]
+	path = ocr_dataset_create_jp
+	url = https://github.com/kaz12tech/ocr_dataset_create_jp/tree/main

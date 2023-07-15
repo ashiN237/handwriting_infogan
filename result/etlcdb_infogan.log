@@ -1,0 +1,3 @@
+2023-07-15 01:19:13,203 __main__:36 <module> [DEBUG]: Namespace(b1=0.5, b2=0.999, batch_size=64, channels=1, code_dim=2, img_size=32, latent_dim=62, lr=0.0002, model_ckpt='', n_classes=10, n_cpu=8, n_epochs=200, sample_interval=400)
+2023-07-15 01:20:15,284 __main__:36 <module> [DEBUG]: Namespace(b1=0.5, b2=0.999, batch_size=64, channels=1, code_dim=2, img_size=32, latent_dim=62, lr=0.0002, model_ckpt='', n_classes=10, n_cpu=8, n_epochs=200, sample_interval=400)
+2023-07-15 01:20:30,462 __main__:36 <module> [DEBUG]: Namespace(b1=0.5, b2=0.999, batch_size=64, channels=1, code_dim=2, img_size=32, latent_dim=62, lr=0.0002, model_ckpt='', n_classes=10, n_cpu=8, n_epochs=200, sample_interval=400)
